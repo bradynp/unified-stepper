@@ -6,23 +6,25 @@
 
 class StepperDriver {
 public:
-    StepperDriver(uint8_t pin_s, uint8_t pin_e, uint8_t pin_d, bool *stepsOn);
+    StepperDriver(bool *stepsOn);
 
-    void setMicrosteps(uint32_t m);
+    void setPins(uint8_t pin_s, uint8_t pin_e, uint8_t pin_d);
+    void updateMicrosteps();
     void enableDriver();
     void disableDriver();
     void toggleDriver();
     void step();
     void setDirection(uint8_t dir);
+    uint8_t microsteps;
 
 protected:
     uint8_t pin_step;
     uint8_t pin_disable;
     uint8_t pin_direction;
     uint8_t pins_micro[3];
-    uint8_t microsteps;
     double Vin;
     double Vref;
+    bool pinsconf;
     bool stepsOnRising;
     bool stepsOnFalling;
     bool enabled;
@@ -31,29 +33,28 @@ protected:
 };
 class StepperMotor {
 public:
-    StepperMotor(uint8_t pin_s, uint8_t pin_e, uint8_t pin_d);
+    StepperMotor();
     ~StepperMotor();
 
+    void setDriverPins(uint8_t pin_s, uint8_t pin_e, uint8_t pin_d);
     void step(long steps, unsigned long microDelay);
-    double stepsPerRotation;
 
 protected:
     StepperDriver *Driver;
+    double stepsPerRotation;
     double Imax;
 };
-class StepperJoint {
+class StepperJoint : public StepperMotor {
 public:
     StepperJoint(double numSteps, uint8_t pin_s, uint8_t pin_e, uint8_t pin_d);
-    ~StepperJoint();
 
-    unsigned long rpmToMicros(double rpm);
     void setHome();
+    void halt();
     void goToAngle(double theta, double rpm);
     void moveByAngle(double theta, double rpm);
     void moveByExact(long ticks, double rpm);
 
 protected:
-    StepperMotor *Motor;
-    double stepsPerRotation;
     double position;
+    unsigned long rpmToMicros(double rpm);
 };
