@@ -113,3 +113,8 @@ void StepperJoint::moveByExact(long ticks, double rpm) {
 unsigned long StepperJoint::rpmToMicros(double rpm) {
     return (1.0 / rpm) * (1000000.0 * 60.0) / (stepsPerRotation * Driver->microsteps);
 }
+
+StepperRobot::StepperRobot() {
+}
+StepperRobot::~StepperRobot() {
+}

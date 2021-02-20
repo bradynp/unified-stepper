@@ -58,3 +58,11 @@ protected:
     double position;
     unsigned long rpmToMicros(double rpm);
 };
+class StepperRobot {
+public:
+    StepperRobot();
+    ~StepperRobot();
+
+protected:
+    StepperJoint *Joints;
+};
