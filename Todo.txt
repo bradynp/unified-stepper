@@ -1,0 +1,4 @@
+TODO
+
+implement timer/interrupt based movement at StepperJoint object level
+implement microstepping control
